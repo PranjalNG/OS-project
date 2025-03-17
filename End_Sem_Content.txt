@@ -1,0 +1,306 @@
+==================================
+END-SEMESTER PRESENTATION CONTENT
+==================================
+
+*** SLIDE 1: TITLE SLIDE ***
+Title: First Come First Serve (FCFS) CPU Scheduling
+Subtitle: End-Semester Presentation
+
+Team Members:
+1. [Team Leader Name] (Roll Number)
+   - Role: Project Lead & Backend Development
+   - Responsibilities: 
+     * Overall project coordination
+     * Crow framework implementation
+     * Server-side logic
+
+2. [Member 2 Name] (Roll Number)
+   - Role: Frontend Development
+   - Responsibilities:
+     * User interface design
+     * HTML/CSS implementation
+     * JavaScript functionality
+
+3. [Member 3 Name] (Roll Number)
+   - Role: Algorithm Implementation
+   - Responsibilities:
+     * FCFS algorithm coding
+     * Time calculations
+     * Process management
+
+4. [Member 4 Name] (Roll Number)
+   - Role: Testing & Documentation
+   - Responsibilities:
+     * Test case development
+     * Documentation
+     * Quality assurance
+
+Department: Computer Applications
+Semester: 4th
+Project Guide: [Guide Name]
+
+*** SLIDE 2: PROJECT OVERVIEW ***
+Title: Project Overview
+
+• Objective: 
+  - Implementation of FCFS CPU scheduling algorithm with interactive web interface
+
+• Technology Stack:
+  - Backend: C++ with Crow Framework
+  - Frontend: HTML, CSS, JavaScript
+
+• Purpose:
+  - Demonstrate CPU scheduling concepts through interactive visualization
+
+*** SLIDE 3: SYSTEM ARCHITECTURE ***
+Title: System Architecture
+
+[DIAGRAM: Simple flow chart showing:]
+  [Frontend Layer (HTML/CSS/JS)] 
+       ↓ HTTP Requests
+  [Backend Layer (Crow Server)] 
+       ↓ Algorithm Processing  
+  [Process Management & Calculations]
+
+• Data Flow:
+  - User inputs processes via web interface
+  - Data sent to C++ backend via HTTP
+  - Algorithm calculates results
+  - Results returned to frontend for display
+
+*** SLIDE 4: BACKEND IMPLEMENTATION ***
+Title: Backend Implementation
+
+• Process Structure:
+```cpp
+struct Process {
+    int pid;              // Process ID
+    int arrival_time;     // When process arrives
+    int burst_time;       // How long it needs to run
+    int completion_time;  // When it finishes
+    int turnaround_time;  // Total time taken
+    int waiting_time;     // Time spent waiting
+};
+```
+
+• Data Storage:
+  - Array of processes (max 10 processes)
+  - Each process contains 6 key attributes
+
+*** SLIDE 5: FCFS ALGORITHM IMPLEMENTATION ***
+Title: FCFS Algorithm Implementation
+
+• Sorting Processes:
+```cpp
+// Sort processes by arrival time (bubble sort)
+for(int i = 0; i < n-1; i++) {
+    for(int j = 0; j < n-i-1; j++) {
+        if(proc[j].arrival_time > proc[j+1].arrival_time) {
+            Process temp = proc[j];
+            proc[j] = proc[j+1];
+            proc[j+1] = temp;
+        }
+    }
+}
+```
+
+• Calculating Completion Time:
+```cpp
+// Calculate completion times
+proc[0].completion_time = proc[0].arrival_time + proc[0].burst_time;
+for (int i = 1; i < n; i++) {
+    if (proc[i].arrival_time > proc[i-1].completion_time) {
+        proc[i].completion_time = proc[i].arrival_time + proc[i].burst_time;
+    } else {
+        proc[i].completion_time = proc[i-1].completion_time + proc[i].burst_time;
+    }
+}
+```
+
+*** SLIDE 6: TIME CALCULATIONS ***
+Title: Time Calculations
+
+• Turnaround Time:
+```cpp
+// Calculate turnaround time
+void findTurnaroundTime(Process proc[], int n) {
+    for (int i = 0; i < n; i++) {
+        proc[i].turnaround_time = proc[i].completion_time - proc[i].arrival_time;
+    }
+}
+```
+
+• Waiting Time:
+```cpp
+// Calculate waiting time
+void findWaitingTime(Process proc[], int n) {
+    for (int i = 0; i < n; i++) {
+        proc[i].waiting_time = proc[i].turnaround_time - proc[i].burst_time;
+    }
+}
+```
+
+*** SLIDE 7: FRONTEND IMPLEMENTATION ***
+Title: Frontend Implementation
+
+• HTML Structure:
+```html
+<form id="processForm">
+    <div class="form-group">
+        <label>Process ID:</label>
+        <input type="number" id="pid" required>
+    </div>
+    <div class="form-group">
+        <label>Arrival Time:</label>
+        <input type="number" id="arrival" required>
+    </div>
+    <div class="form-group">
+        <label>Burst Time:</label>
+        <input type="number" id="burst" required>
+    </div>
+    <button type="submit">Add Process</button>
+</form>
+```
+
+*** SLIDE 8: JAVASCRIPT FUNCTIONALITY ***
+Title: JavaScript Functionality
+
+• Process Management:
+```javascript
+// Store processes
+let processes = [];
+
+// Add process to list
+function addProcess() {
+    const pid = document.getElementById('pid').value;
+    const arrival = document.getElementById('arrival').value;
+    const burst = document.getElementById('burst').value;
+
+    processes.push({
+        pid: parseInt(pid),
+        arrival: parseInt(arrival),
+        burst: parseInt(burst)
+    });
+
+    updateProcessList();
+}
+```
+
+*** SLIDE 9: API INTEGRATION ***
+Title: API Integration
+
+• Server Communication:
+```javascript
+async function calculateFCFS() {
+    try {
+        const response = await fetch('http://localhost:5000/fcfs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ processes: processes })
+        });
+        const results = await response.json();
+        displayResults(results);
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error calculating FCFS');
+    }
+}
+```
+
+*** SLIDE 10: CROW FRAMEWORK IMPLEMENTATION ***
+Title: Crow Framework Implementation
+
+• Server Setup:
+```cpp
+// Include Crow header
+#include "crow.h"
+
+// Initialize Crow application
+crow::SimpleApp app;
+
+// Define routes
+CROW_ROUTE(app, "/")([](){
+    return "FCFS Scheduler";
+});
+
+// FCFS calculation endpoint
+CROW_ROUTE(app, "/fcfs").methods("POST"_method)
+([](const crow::request& req){
+    auto json = crow::json::load(req.body);
+    // Process FCFS calculation
+    return crow::response(result);
+});
+
+// Start server
+app.port(5000).multithreaded().run();
+```
+
+*** SLIDE 11: TESTING & RESULTS ***
+Title: Testing & Results
+
+• Test Cases:
+  - Case 1: Sequential Arrival
+    Process 1: Arrival = 0, Burst = 5
+    Process 2: Arrival = 5, Burst = 3
+    Process 3: Arrival = 8, Burst = 2
+
+  - Case 2: Overlapping Arrival
+    Process 1: Arrival = 0, Burst = 5
+    Process 2: Arrival = 2, Burst = 3
+    Process 3: Arrival = 4, Burst = 2
+
+• Results Analysis:
+  - Average Waiting Time
+  - Average Turnaround Time
+  - Visual Representation of Process Execution
+
+*** SLIDE 12: CHALLENGES & SOLUTIONS ***
+Title: Challenges & Solutions
+
+• Challenge 1: Process Synchronization
+  - Solution: Implemented proper sorting algorithm
+
+• Challenge 2: Real-time Updates
+  - Solution: Used async/await in JavaScript
+
+• Challenge 3: Error Handling
+  - Solution: Implemented comprehensive error checks
+
+• Challenge 4: Cross-Origin Requests
+  - Solution: Added appropriate CORS headers
+
+*** SLIDE 13: FUTURE SCOPE ***
+Title: Future Scope
+
+• Planned Enhancements:
+  - Support for multiple scheduling algorithms
+  - Comparative performance visualization
+  - Gantt chart representation
+
+• Technical Improvements:
+  - Database integration for process history
+  - User accounts and saved configurations
+  - Mobile-responsive design
+
+*** SLIDE 14: LEARNING OUTCOMES ***
+Title: Learning Outcomes
+
+• Technical Skills:
+  - C++ programming expertise
+  - Web development fundamentals
+  - Algorithm design and analysis
+
+• Soft Skills:
+  - Project planning and execution
+  - Technical documentation
+  - Problem-solving approach
+
+*** SLIDE 15: THANK YOU ***
+Title: Thank You
+
+Contact Information:
+Email: [Your Email]
+GitHub: [Your GitHub]
+Questions & Discussion 

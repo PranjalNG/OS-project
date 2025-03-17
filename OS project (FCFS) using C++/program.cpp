@@ -1,17 +1,28 @@
-#include <iostream>
-#include <vector>
-#include <algorithm> // For sorting
+/**
+ * First Come First Serve (FCFS) CPU Scheduling Algorithm Implementation
+ * Using Crow Framework for Web Interface
+ * This is a beginner-friendly implementation with detailed comments
+ */
+
+#include "crow.h"  // Include Crow framework
+#include <algorithm>
 #include <string>
 #include <sstream>
-#include <fstream>
 
-// Include Windows-specific networking headers
-#include <winsock2.h>
-#include <ws2tcpip.h>
+using namespace std;
 
-// Need to link with Ws2_32.lib
-#pragma comment(lib, "ws2_32.lib")
+// Maximum number of processes we can handle
+const int MAX_PROCESSES = 10;
 
+/**
+ * Process structure to store information about each process
+ * pid: Process ID
+ * arrival_time: When the process arrives in the ready queue
+ * burst_time: How long the process needs to run
+ * completion_time: When the process finishes execution
+ * turnaround_time: Total time from arrival to completion
+ * waiting_time: Time spent waiting in the ready queue
+ */
 struct Process {
     int pid;
     int arrival_time;
@@ -21,273 +32,142 @@ struct Process {
     int waiting_time;
 };
 
-void findCompletionTime(std::vector<Process>& proc) {
+/**
+ * Calculates completion time for each process using FCFS algorithm
+ * Processes are first sorted by arrival time
+ * First process starts at its arrival time
+ * Subsequent processes start after previous process completes
+ */
+void findCompletionTime(Process proc[], int n) {
     // Sort processes by arrival time (key requirement for FCFS)
-    std::sort(proc.begin(), proc.end(), [](const Process& a, const Process& b) {
-        return a.arrival_time < b.arrival_time;
-    });
+    // Simple bubble sort for beginners
+    for(int i = 0; i < n-1; i++) {
+        for(int j = 0; j < n-i-1; j++) {
+            if(proc[j].arrival_time > proc[j+1].arrival_time) {
+                // Swap processes
+                Process temp = proc[j];
+                proc[j] = proc[j+1];
+                proc[j+1] = temp;
+            }
+        }
+    }
     
-    // First process completion time
+    // First process starts at its arrival time
     proc[0].completion_time = proc[0].arrival_time + proc[0].burst_time;
     
-    // For remaining processes
-    for (size_t i = 1; i < proc.size(); i++) {
-        // If the process arrives after previous process completes
+    // Calculate completion time for remaining processes
+    for (int i = 1; i < n; i++) {
+        // If process arrives after previous process completes
         if (proc[i].arrival_time > proc[i-1].completion_time) {
             proc[i].completion_time = proc[i].arrival_time + proc[i].burst_time;
         } else {
-            // If the process arrives while previous process is still running
+            // If process arrives while previous process is running
             proc[i].completion_time = proc[i-1].completion_time + proc[i].burst_time;
         }
     }
 }
 
-void findTurnaroundTime(std::vector<Process>& proc) {
-    for (size_t i = 0; i < proc.size(); i++) {
+/**
+ * Calculates turnaround time for each process
+ * Turnaround time = Completion time - Arrival time
+ */
+void findTurnaroundTime(Process proc[], int n) {
+    for (int i = 0; i < n; i++) {
         proc[i].turnaround_time = proc[i].completion_time - proc[i].arrival_time;
     }
 }
 
-void findWaitingTime(std::vector<Process>& proc) {
-    for (size_t i = 0; i < proc.size(); i++) {
+/**
+ * Calculates waiting time for each process
+ * Waiting time = Turnaround time - Burst time
+ */
+void findWaitingTime(Process proc[], int n) {
+    for (int i = 0; i < n; i++) {
         proc[i].waiting_time = proc[i].turnaround_time - proc[i].burst_time;
     }
 }
 
-void findFCFS(std::vector<Process>& proc) {
-    findCompletionTime(proc);
-    findTurnaroundTime(proc);
-    findWaitingTime(proc);
-}
-
-// Simple JSON parsing function
-std::vector<Process> parseJSON(const std::string& json) {
-    std::vector<Process> processes;
-    
-    // Very basic JSON parsing - in real code, use a proper JSON library
-    size_t processesPos = json.find("\"processes\"");
-    if (processesPos == std::string::npos) return processes;
-    
-    size_t arrStart = json.find('[', processesPos);
-    size_t arrEnd = json.find(']', arrStart);
-    
-    if (arrStart == std::string::npos || arrEnd == std::string::npos) return processes;
-    
-    std::string processesArray = json.substr(arrStart + 1, arrEnd - arrStart - 1);
-    
-    size_t pos = 0;
-    while (pos < processesArray.length()) {
-        size_t objStart = processesArray.find('{', pos);
-        if (objStart == std::string::npos) break;
-        
-        size_t objEnd = processesArray.find('}', objStart);
-        if (objEnd == std::string::npos) break;
-        
-        std::string processObj = processesArray.substr(objStart, objEnd - objStart + 1);
-        
-        // Extract values
-        Process p;
-        
-        // Find pid
-        size_t pidPos = processObj.find("\"pid\"");
-        if (pidPos != std::string::npos) {
-            size_t colonPos = processObj.find(':', pidPos);
-            size_t commaPos = processObj.find(',', colonPos);
-            if (commaPos == std::string::npos) commaPos = processObj.find('}', colonPos);
-            
-            std::string pidStr = processObj.substr(colonPos + 1, commaPos - colonPos - 1);
-            p.pid = std::stoi(pidStr);
-        }
-        
-        // Find arrival time
-        size_t arrivalPos = processObj.find("\"arrival\"");
-        if (arrivalPos != std::string::npos) {
-            size_t colonPos = processObj.find(':', arrivalPos);
-            size_t commaPos = processObj.find(',', colonPos);
-            if (commaPos == std::string::npos) commaPos = processObj.find('}', colonPos);
-            
-            std::string arrivalStr = processObj.substr(colonPos + 1, commaPos - colonPos - 1);
-            p.arrival_time = std::stoi(arrivalStr);
-        }
-        
-        // Find burst time
-        size_t burstPos = processObj.find("\"burst\"");
-        if (burstPos != std::string::npos) {
-            size_t colonPos = processObj.find(':', burstPos);
-            size_t commaPos = processObj.find(',', colonPos);
-            if (commaPos == std::string::npos) commaPos = processObj.find('}', colonPos);
-            
-            std::string burstStr = processObj.substr(colonPos + 1, commaPos - colonPos - 1);
-            p.burst_time = std::stoi(burstStr);
-        }
-        
-        // Only add if all values are set and burst time is positive
-        if (p.burst_time > 0) {
-            processes.push_back(p);
-        }
-        
-        pos = objEnd + 1;
-    }
-    
-    return processes;
-}
-
-// Generate JSON response
-std::string generateJSON(const std::vector<Process>& processes) {
-    std::stringstream ss;
-    
-    ss << "[";
-    
-    for (size_t i = 0; i < processes.size(); i++) {
-        if (i > 0) ss << ",";
-        
-        ss << "{";
-        ss << "\"pid\":" << processes[i].pid << ",";
-        ss << "\"arrival_time\":" << processes[i].arrival_time << ",";
-        ss << "\"burst_time\":" << processes[i].burst_time << ",";
-        ss << "\"completion_time\":" << processes[i].completion_time << ",";
-        ss << "\"turnaround_time\":" << processes[i].turnaround_time << ",";
-        ss << "\"waiting_time\":" << processes[i].waiting_time;
-        ss << "}";
-    }
-    
-    ss << "]";
-    
-    return ss.str();
+/**
+ * Main FCFS calculation function that calls all helper functions
+ */
+void findFCFS(Process proc[], int n) {
+    findCompletionTime(proc, n);
+    findTurnaroundTime(proc, n);
+    findWaitingTime(proc, n);
 }
 
 int main() {
-    // Initialize Winsock
-    WSADATA wsaData;
-    int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (result != 0) {
-        std::cerr << "WSAStartup failed: " << result << std::endl;
-        return 1;
-    }
+    // Create a new Crow application
+    crow::SimpleApp app;
 
-    // Create a socket
-    SOCKET serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (serverSocket == INVALID_SOCKET) {
-        std::cerr << "Error creating socket: " << WSAGetLastError() << std::endl;
-        WSACleanup();
-        return 1;
-    }
+    // Define a route for the root path ("/")
+    CROW_ROUTE(app, "/")([](){
+        // Read and return the HTML file
+        ifstream file("index.html");
+        stringstream buffer;
+        buffer << file.rdbuf();
+        return buffer.str();
+    });
 
-    // Setup the server address structure
-    sockaddr_in serverAddress;
-    serverAddress.sin_family = AF_INET;          // IPv4
-    serverAddress.sin_addr.s_addr = INADDR_ANY;  // Any available address
-    serverAddress.sin_port = htons(5000);        // Port 5000
+    // Define a route for FCFS calculation ("/fcfs")
+    CROW_ROUTE(app, "/fcfs").methods("POST"_method)
+    ([](const crow::request& req){
+        try {
+            // Parse JSON from request body
+            auto json = crow::json::load(req.body);
+            if (!json) {
+                return crow::response(400, "Invalid JSON");
+            }
 
-    // Bind the socket
-    if (bind(serverSocket, (SOCKADDR*)&serverAddress, sizeof(serverAddress)) == SOCKET_ERROR) {
-        std::cerr << "Bind failed: " << WSAGetLastError() << std::endl;
-        closesocket(serverSocket);
-        WSACleanup();
-        return 1;
-    }
+            // Create array to store processes
+            Process processes[MAX_PROCESSES];
+            int processCount = 0;
 
-    // Listen for incoming connections
-    if (listen(serverSocket, SOMAXCONN) == SOCKET_ERROR) {
-        std::cerr << "Listen failed: " << WSAGetLastError() << std::endl;
-        closesocket(serverSocket);
-        WSACleanup();
-        return 1;
-    }
+            // Parse each process from JSON
+            for (const auto& process : json["processes"]) {
+                if (processCount >= MAX_PROCESSES) {
+                    return crow::response(400, "Too many processes. Maximum allowed: " + to_string(MAX_PROCESSES));
+                }
 
-    std::cout << "Server started on port 5000..." << std::endl;
-    std::cout << "Open index.html in your browser to use the application" << std::endl;
-
-    // Main server loop
-    while (true) {
-        // Accept a client socket
-        SOCKET clientSocket = accept(serverSocket, NULL, NULL);
-        if (clientSocket == INVALID_SOCKET) {
-            std::cerr << "Accept failed: " << WSAGetLastError() << std::endl;
-            continue;
-        }
-
-        // Receive data from client
-        char recvBuffer[4096];
-        int bytesReceived = recv(clientSocket, recvBuffer, sizeof(recvBuffer), 0);
-        
-        if (bytesReceived > 0) {
-            // Null-terminate the received data
-            recvBuffer[bytesReceived] = '\0';
-            
-            // Parse the HTTP request
-            std::string request(recvBuffer);
-            
-            // Check if it's a POST request to /fcfs
-            if (request.find("POST /fcfs HTTP/1.1") != std::string::npos) {
-                // Find the request body (JSON data)
-                size_t bodyStart = request.find("\r\n\r\n");
-                if (bodyStart != std::string::npos) {
-                    std::string jsonData = request.substr(bodyStart + 4);
-                    
-                    // Parse JSON and process FCFS
-                    std::vector<Process> processes = parseJSON(jsonData);
-                    
-                    if (!processes.empty()) {
-                        // Calculate FCFS
-                        findFCFS(processes);
-                        
-                        // Generate response JSON
-                        std::string responseJson = generateJSON(processes);
-                        
-                        // Prepare HTTP response with CORS headers
-                        std::stringstream response;
-                        response << "HTTP/1.1 200 OK\r\n";
-                        response << "Content-Type: application/json\r\n";
-                        response << "Access-Control-Allow-Origin: *\r\n";
-                        response << "Access-Control-Allow-Methods: POST, OPTIONS\r\n";
-                        response << "Access-Control-Allow-Headers: Content-Type\r\n";
-                        response << "Content-Length: " << responseJson.length() << "\r\n";
-                        response << "\r\n";
-                        response << responseJson;
-                        
-                        // Send the response
-                        send(clientSocket, response.str().c_str(), response.str().length(), 0);
-                    } else {
-                        // No valid processes found
-                        std::string errorMsg = "{\"error\":\"No valid processes provided\"}";
-                        
-                        std::stringstream response;
-                        response << "HTTP/1.1 400 Bad Request\r\n";
-                        response << "Content-Type: application/json\r\n";
-                        response << "Access-Control-Allow-Origin: *\r\n";
-                        response << "Access-Control-Allow-Methods: POST, OPTIONS\r\n";
-                        response << "Access-Control-Allow-Headers: Content-Type\r\n";
-                        response << "Content-Length: " << errorMsg.length() << "\r\n";
-                        response << "\r\n";
-                        response << errorMsg;
-                        
-                        send(clientSocket, response.str().c_str(), response.str().length(), 0);
-                    }
+                processes[processCount].pid = process["pid"].i();
+                processes[processCount].arrival_time = process["arrival"].i();
+                processes[processCount].burst_time = process["burst"].i();
+                
+                // Only add valid processes
+                if (processes[processCount].burst_time > 0) {
+                    processCount++;
                 }
             }
-            // Handle OPTIONS request (CORS preflight)
-            else if (request.find("OPTIONS /fcfs HTTP/1.1") != std::string::npos) {
-                std::stringstream response;
-                response << "HTTP/1.1 200 OK\r\n";
-                response << "Access-Control-Allow-Origin: *\r\n";
-                response << "Access-Control-Allow-Methods: POST, OPTIONS\r\n";
-                response << "Access-Control-Allow-Headers: Content-Type\r\n";
-                response << "Content-Length: 0\r\n";
-                response << "\r\n";
-                
-                send(clientSocket, response.str().c_str(), response.str().length(), 0);
-            }
-            // Could handle other routes here if needed
-        }
-        
-        // Close the client socket
-        closesocket(clientSocket);
-    }
 
-    // Cleanup
-    closesocket(serverSocket);
-    WSACleanup();
-    
+            // If no valid processes found
+            if (processCount == 0) {
+                return crow::response(400, "No valid processes provided");
+            }
+
+            // Calculate FCFS
+            findFCFS(processes, processCount);
+
+            // Create response JSON
+            crow::json::wvalue result;
+            for (int i = 0; i < processCount; i++) {
+                result[i]["pid"] = processes[i].pid;
+                result[i]["arrival_time"] = processes[i].arrival_time;
+                result[i]["burst_time"] = processes[i].burst_time;
+                result[i]["completion_time"] = processes[i].completion_time;
+                result[i]["turnaround_time"] = processes[i].turnaround_time;
+                result[i]["waiting_time"] = processes[i].waiting_time;
+            }
+
+            // Return success response
+            return crow::response(result);
+        }
+        catch (const exception& e) {
+            return crow::response(500, string("Error: ") + e.what());
+        }
+    });
+
+    // Start the server on port 5000
+    app.port(5000).multithreaded().run();
+
     return 0;
 }

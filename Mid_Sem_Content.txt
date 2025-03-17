@@ -1,0 +1,150 @@
+==================================
+MID-SEMESTER PRESENTATION CONTENT
+==================================
+
+*** SLIDE 1: TITLE SLIDE ***
+Title: First Come First Serve (FCFS) CPU Scheduling
+Subtitle: Mid-Semester Presentation
+
+Team Members:
+1. [Team Leader Name] (Roll Number)
+   - Role: Project Lead & Backend Development
+
+2. [Member 2 Name] (Roll Number)
+   - Role: Frontend Development
+
+3. [Member 3 Name] (Roll Number)
+   - Role: Algorithm Implementation
+
+4. [Member 4 Name] (Roll Number)
+   - Role: Testing & Documentation
+
+Department: Computer Applications
+Semester: 4th
+Project Guide: [Guide Name]
+
+*** SLIDE 2: PROJECT OVERVIEW ***
+Title: Project Overview
+
+• Objective: 
+  - Implementation of FCFS CPU scheduling algorithm with interactive web interface
+
+• Technology Stack:
+  - Backend: C++ with Crow Framework
+  - Frontend: HTML, CSS, JavaScript
+
+• Purpose:
+  - Demonstrate CPU scheduling concepts through interactive visualization
+
+*** SLIDE 3: WHAT IS CPU SCHEDULING? ***
+Title: Understanding CPU Scheduling
+
+• Definition:
+  - Process of determining which process runs on the CPU at a given time
+
+• Importance:
+  - Efficient CPU utilization
+  - Fair process execution
+  - System performance optimization
+
+• Real-world Example:
+  - Bank queue system (first customer gets served first)
+
+*** SLIDE 4: FIRST COME FIRST SERVE (FCFS) ***
+Title: First Come First Serve (FCFS)
+
+• Basic Concept:
+  - First process to arrive gets executed first
+  - Simple queuing mechanism
+
+• Characteristics:
+  - Non-preemptive scheduling
+  - Simple to implement
+  - Fair in terms of arrival order
+
+• Example Scenario:
+  Process 1: Arrival = 0, Burst = 5
+  Process 2: Arrival = 2, Burst = 3
+  Process 3: Arrival = 4, Burst = 2
+
+*** SLIDE 5: KEY METRICS ***
+Title: Key Performance Metrics
+
+• Arrival Time:
+  - When a process enters the ready queue
+
+• Burst Time:
+  - Time required for process execution
+
+• Completion Time:
+  - When a process finishes execution
+
+• Turnaround Time:
+  - Total time from arrival to completion
+
+• Waiting Time:
+  - Time spent waiting in the ready queue
+
+*** SLIDE 6: PROJECT FEATURES ***
+Title: Project Features
+
+• Interactive Web Interface:
+  - Process input form
+  - Real-time process list
+  - Results visualization
+
+• Backend Processing:
+  - FCFS algorithm implementation
+  - Time calculations
+  - JSON data handling
+
+*** SLIDE 7: TECHNICAL ARCHITECTURE ***
+Title: System Architecture
+
+• Frontend Layer:
+  - User Interface Components
+  - Data Collection
+  - Results Display
+
+• Backend Layer:
+  - FCFS Algorithm
+  - Web Server
+  - Data Processing
+
+• Communication:
+  - HTTP Requests/Responses
+  - JSON Data Format
+
+*** SLIDE 8: FUTURE ENHANCEMENTS ***
+Title: Future Enhancements
+
+• Planned Features:
+  - Process visualization graph
+  - Performance comparison charts
+  - Multiple scheduling algorithms
+
+• Improvements:
+  - Enhanced user interface
+  - Real-time updates
+  - Better error handling
+
+*** SLIDE 9: LEARNING OUTCOMES ***
+Title: Learning Outcomes
+
+• Technical Skills:
+  - C++ programming
+  - Web development fundamentals
+  - Algorithm implementation
+
+• Soft Skills:
+  - Project management
+  - Documentation practices
+  - Presentation skills
+
+*** SLIDE 10: THANK YOU ***
+Title: Thank You
+
+Contact Information:
+Email: [Your Email]
+GitHub: [Your GitHub]
+Questions & Discussion 
