@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCFS Scheduling</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .process-row {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .process-row label {
+            width: 120px;
+            display: inline-block;
+            text-align: right;
+            margin-right: 10px;
+        }
+        input[type="number"] {
+            width: 80px;
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .results-container {
+            margin-top: 30px;
+        }
+        .average {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .loading {
+            text-align: center;
+            display: none;
+            margin-top: 15px;
+        }
+        .connection-status {
+            text-align: center;
+            margin-top: 10px;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>First Come First Serve (FCFS) Scheduling Algorithm</h2>
+        
+        <div id="connectionStatus" class="connection-status disconnected">
+            Checking server connection...
+        </div>
+        
+        <form id="fcfsForm">
+            <div id="processInputs">
+                <div class="process-row">
+                    <label for="pid1">Process 1:</label>
+                    <input type="number" id="pid1" min="1" placeholder="PID" required>
+                    <input type="number" id="arrival1" min="0" placeholder="Arrival Time" required>
+                    <input type="number" id="burst1" min="1" placeholder="Burst Time" required>
+                </div>
+                
+                <div class="process-row">
+                    <label for="pid2">Process 2:</label>
+                    <input type="number" id="pid2" min="1" placeholder="PID">
+                    <input type="number" id="arrival2" min="0" placeholder="Arrival Time">
+                    <input type="number" id="burst2" min="1" placeholder="Burst Time">
+                </div>
+                
+                <div class="process-row">
+                    <label for="pid3">Process 3:</label>
+                    <input type="number" id="pid3" min="1" placeholder="PID">
+                    <input type="number" id="arrival3" min="0" placeholder="Arrival Time">
+                    <input type="number" id="burst3" min="1" placeholder="Burst Time">
+                </div>
+                
+                <div class="process-row">
+                    <label for="pid4">Process 4:</label>
+                    <input type="number" id="pid4" min="1" placeholder="PID">
+                    <input type="number" id="arrival4" min="0" placeholder="Arrival Time">
+                    <input type="number" id="burst4" min="1" placeholder="Burst Time">
+                </div>
+                
+                <div class="process-row">
+                    <label for="pid5">Process 5:</label>
+                    <input type="number" id="pid5" min="1" placeholder="PID">
+                    <input type="number" id="arrival5" min="0" placeholder="Arrival Time">
+                    <input type="number" id="burst5" min="1" placeholder="Burst Time">
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button type="button" onclick="submitFCFS()">Calculate FCFS</button>
+            </div>
+        </form>
+        
+        <div id="errorMessage" class="error-message"></div>
+        <div id="loading" class="loading">Processing...</div>
+        
+        <div class="results-container">
+            <h3>Scheduling Results:</h3>
+            <table id="resultTable">
+                <thead>
+                    <tr>
+                        <th>PID</th>
+                        <th>Arrival Time</th>
+                        <th>Burst Time</th>
+                        <th>Completion Time</th>
+                        <th>Turnaround Time</th>
+                        <th>Waiting Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            
+            <div id="averages" class="average"></div>
+        </div>
+    </div>
+
+    <script>
+        // Check server connection
+        function checkServerConnection() {
+            fetch('http://localhost:5000/fcfs', {
+                method: 'OPTIONS',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('connectionStatus').className = 'connection-status connected';
+                    document.getElementById('connectionStatus').textContent = 'Connected to server';
+                } else {
+                    document.getElementById('connectionStatus').className = 'connection-status disconnected';
+                    document.getElementById('connectionStatus').textContent = 'Server error: ' + response.status;
+                }
+            })
+            .catch(error => {
+                document.getElementById('connectionStatus').className = 'connection-status disconnected';
+                document.getElementById('connectionStatus').textContent = 'Cannot connect to server. Is it running?';
+            });
+        }
+        
+        // Check connection when page loads
+        window.addEventListener('load', checkServerConnection);
+        
+        function validateInputs() {
+            // At least one complete process is required
+            let validProcesses = 0;
+            
+            for (let i = 1; i <= 5; i++) {
+                const pid = document.getElementById('pid' + i).value;
+                const arrival = document.getElementById('arrival' + i).value;
+                const burst = document.getElementById('burst' + i).value;
+                
+                // If any field is filled for this process, all must be filled
+                if (pid || arrival || burst) {
+                    if (!pid || !arrival || !burst) {
+                        document.getElementById('errorMessage').textContent = 
+                            `Process ${i} has incomplete information. Please fill all fields.`;
+                        return false;
+                    }
+                    
+                    // Check for positive burst time
+                    if (parseInt(burst) <= 0) {
+                        document.getElementById('errorMessage').textContent = 
+                            `Process ${i} must have a positive burst time.`;
+                        return false;
+                    }
+                    
+                    validProcesses++;
+                }
+            }
+            
+            if (validProcesses === 0) {
+                document.getElementById('errorMessage').textContent = 
+                    'Please enter at least one process.';
+                return false;
+            }
+            
+            document.getElementById('errorMessage').textContent = '';
+            return true;
+        }
+        
+        function submitFCFS() {
+            // Clear previous results
+            document.getElementById('errorMessage').textContent = '';
+            document.querySelector("#resultTable tbody").innerHTML = "";
+            document.getElementById('averages').textContent = "";
+            
+            // Validate inputs
+            if (!validateInputs()) {
+                return;
+            }
+            
+            // Show loading indicator
+            document.getElementById('loading').style.display = 'block';
+            
+            const processes = [];
+            for (let i = 1; i <= 5; i++) {
+                const pid = document.getElementById('pid' + i).value;
+                const arrival = document.getElementById('arrival' + i).value;
+                const burst = document.getElementById('burst' + i).value;
+                
+                if (pid && arrival && burst) {
+                    processes.push({ 
+                        pid: parseInt(pid), 
+                        arrival: parseInt(arrival), 
+                        burst: parseInt(burst) 
+                    });
+                }
+            }
+
+            // Send data to the backend
+            fetch('http://localhost:5000/fcfs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ processes }),
+            })
+            .then(response => {
+                // Hide loading indicator
+                document.getElementById('loading').style.display = 'none';
+                
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text || 'Network response was not ok');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                const resultTable = document.querySelector("#resultTable tbody");
+                resultTable.innerHTML = ""; // Clear old results
+
+                let totalTurnaround = 0;
+                let totalWaiting = 0;
+
+                // Fill table with new results
+                data.forEach(process => {
+                    const row = `<tr>
+                        <td>${process.pid}</td>
+                        <td>${process.arrival_time}</td>
+                        <td>${process.burst_time}</td>
+                        <td>${process.completion_time}</td>
+                        <td>${process.turnaround_time}</td>
+                        <td>${process.waiting_time}</td>
+                    </tr>`;
+                    resultTable.innerHTML += row;
+                    
+                    totalTurnaround += process.turnaround_time;
+                    totalWaiting += process.waiting_time;
+                });
+                
+                // Calculate averages
+                const avgTurnaround = (totalTurnaround / data.length).toFixed(2);
+                const avgWaiting = (totalWaiting / data.length).toFixed(2);
+                
+                document.getElementById('averages').innerHTML = 
+                    `Average Turnaround Time: ${avgTurnaround} | Average Waiting Time: ${avgWaiting}`;
+            })
+            .catch(error => {
+                // Hide loading indicator
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('errorMessage').textContent = 
+                    'Error: ' + (error.message || 'Could not connect to server');
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
