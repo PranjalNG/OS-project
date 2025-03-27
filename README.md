@@ -148,9 +148,9 @@ struct Process {
    - Real-time updates
 
 ## 👥 Team
-- **Project Lead**: [Your Name]
-- **Backend Developer**: [Team Member 2]
-- **Frontend Developer**: [Team Member 3]
+- **Project Lead & Backend Development**: Pranjal Nath Goswami
+- **Frontend Development**: [Team Member 2]
+- **Algorithm Implementation**: [Team Member 3] 
 - **Testing & Documentation**: [Team Member 4]
 
 ## 📝 License
@@ -164,7 +164,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 5. Open a Pull Request
 
 ## 📞 Support
-For support, email [your.email@example.com] or create an issue in the repository.
+For support, email pranjalng2002@gmail.com or create an issue in the repository.
 
 ## 🙏 Acknowledgments
 - Operating Systems course faculty
@@ -172,4 +172,4 @@ For support, email [your.email@example.com] or create an issue in the repository
 - Project contributors
 
 ---
-Made with ❤️ by [Your Team Name]
+Made with ❤️ by OS Project Team at [Institution Name]
