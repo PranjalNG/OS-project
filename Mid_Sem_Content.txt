@@ -4,37 +4,34 @@ MID-SEMESTER PRESENTATION CONTENT
 
 *** SLIDE 1: TITLE SLIDE ***
 Title: First Come First Serve (FCFS) CPU Scheduling
-Subtitle: Mid-Semester Presentation
+A Web-Based Implementation
 
-Team Members:
-1. [Team Leader Name] (Roll Number)
-   - Role: Project Lead & Backend Development
+Presented by:
+Pranjal Nath Goswami (University Roll No: 2371289) - Project Lead & Backend Developer
+Diya Bisht (University Roll No: 2371101) - Frontend Developer
+Karan Singh (University Roll No: 2371171) - Algorithm Implementation
+Pradeep Singh Bora (University Roll No: 2371283) - Testing & Documentation
 
-2. [Member 2 Name] (Roll Number)
-   - Role: Frontend Development
-
-3. [Member 3 Name] (Roll Number)
-   - Role: Algorithm Implementation
-
-4. [Member 4 Name] (Roll Number)
-   - Role: Testing & Documentation
-
-Department: Computer Applications
-Semester: 4th
-Project Guide: [Guide Name]
+University: Graphic Era Hill University (GEHU), Bhimtal
+Department: School of Computing
+Course: Bachelor in Computer Application (BCA)
+Semester: 4th (2nd Year)
+Subject: Software Engineering
+Project Group No.: 44
+Project Faculty: Dr. Mukesh Joshi, Dr. Naveen Tewari
 
 *** SLIDE 2: PROJECT OVERVIEW ***
 Title: Project Overview
 
 • Objective: 
-  - Implementation of FCFS CPU scheduling algorithm with interactive web interface
+  - Develop a web-based implementation of the FCFS CPU scheduling algorithm with visualization
 
 • Technology Stack:
   - Backend: C++ with Crow Framework
   - Frontend: HTML, CSS, JavaScript
 
 • Purpose:
-  - Demonstrate CPU scheduling concepts through interactive visualization
+  - Create an interactive tool to understand CPU scheduling
 
 *** SLIDE 3: WHAT IS CPU SCHEDULING? ***
 Title: Understanding CPU Scheduling
@@ -43,18 +40,18 @@ Title: Understanding CPU Scheduling
   - Process of determining which process runs on the CPU at a given time
 
 • Importance:
-  - Efficient CPU utilization
-  - Fair process execution
-  - System performance optimization
+  - Maximizes CPU utilization
+  - Ensures fair allocation of resources
+  - Minimizes waiting time for processes
 
 • Real-world Example:
-  - Bank queue system (first customer gets served first)
+  - Bank queue system (first person in line gets served first)
 
 *** SLIDE 4: FIRST COME FIRST SERVE (FCFS) ***
 Title: First Come First Serve (FCFS)
 
 • Basic Concept:
-  - First process to arrive gets executed first
+  - Processes are executed in the order they arrive
   - Simple queuing mechanism
 
 • Characteristics:
@@ -63,88 +60,89 @@ Title: First Come First Serve (FCFS)
   - Fair in terms of arrival order
 
 • Example Scenario:
-  Process 1: Arrival = 0, Burst = 5
-  Process 2: Arrival = 2, Burst = 3
-  Process 3: Arrival = 4, Burst = 2
+  Process | Arrival Time | Burst Time
+  P1      | 0            | 5
+  P2      | 1            | 3
+  P3      | 2            | 8
 
 *** SLIDE 5: KEY METRICS ***
 Title: Key Performance Metrics
 
 • Arrival Time:
-  - When a process enters the ready queue
+  - When a process enters the system
 
 • Burst Time:
-  - Time required for process execution
+  - CPU time required for process execution
 
 • Completion Time:
   - When a process finishes execution
 
 • Turnaround Time:
-  - Total time from arrival to completion
+  - Total time from arrival to completion (CT - AT)
 
 • Waiting Time:
-  - Time spent waiting in the ready queue
+  - Time process waits in ready queue (TAT - BT)
 
 *** SLIDE 6: PROJECT FEATURES ***
 Title: Project Features
 
 • Interactive Web Interface:
-  - Process input form
-  - Real-time process list
-  - Results visualization
+  - Add/remove processes dynamically
+  - Input process details (PID, arrival time, burst time)
+  - Real-time visualization of schedule
 
 • Backend Processing:
-  - FCFS algorithm implementation
-  - Time calculations
-  - JSON data handling
+  - Efficient implementation of FCFS algorithm
+  - JSON-based data exchange
+  - Responsive API endpoints
 
 *** SLIDE 7: TECHNICAL ARCHITECTURE ***
 Title: System Architecture
 
 • Frontend Layer:
-  - User Interface Components
-  - Data Collection
-  - Results Display
+  - HTML structure for user interface
+  - CSS styling for visual elements
+  - JavaScript for dynamic interactions
 
 • Backend Layer:
-  - FCFS Algorithm
-  - Web Server
-  - Data Processing
-
-• Communication:
-  - HTTP Requests/Responses
-  - JSON Data Format
+  - C++ implementation of core algorithm
+  - Crow Framework for web server capabilities
+  - JSON processing for data exchange
 
 *** SLIDE 8: FUTURE ENHANCEMENTS ***
 Title: Future Enhancements
 
 • Planned Features:
-  - Process visualization graph
-  - Performance comparison charts
-  - Multiple scheduling algorithms
+  - Support for additional scheduling algorithms (SJF, Round Robin)
+  - Enhanced visualization options
+  - Performance metrics comparison
+  - Mobile-responsive design
 
-• Improvements:
-  - Enhanced user interface
-  - Real-time updates
-  - Better error handling
+• Technical Improvements:
+  - Optimization for large process sets
+  - Real-time updates using WebSockets
+  - Local storage for saving scenarios
 
 *** SLIDE 9: LEARNING OUTCOMES ***
 Title: Learning Outcomes
 
 • Technical Skills:
-  - C++ programming
-  - Web development fundamentals
-  - Algorithm implementation
+  - Algorithm implementation in C++
+  - Web development with HTML, CSS, JS
+  - Client-server architecture
+  - JSON data handling
 
 • Soft Skills:
-  - Project management
-  - Documentation practices
-  - Presentation skills
+  - Project planning and management
+  - Documentation
+  - Team collaboration
+  - Problem-solving
 
 *** SLIDE 10: THANK YOU ***
 Title: Thank You
 
 Contact Information:
-Email: [Your Email]
-GitHub: [Your GitHub]
+Email: pranjalng2002@gmail.com
+GitHub: https://github.com/PranjalNG/OS-project
+
 Questions & Discussion 

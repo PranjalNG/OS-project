@@ -7,37 +7,41 @@ Title: First Come First Serve (FCFS) CPU Scheduling
 Subtitle: End-Semester Presentation
 
 Team Members:
-1. [Team Leader Name] (Roll Number)
+1. Pranjal Nath Goswami (University Roll No: 2371289)
    - Role: Project Lead & Backend Development
    - Responsibilities: 
      * Overall project coordination
      * Crow framework implementation
      * Server-side logic
 
-2. [Member 2 Name] (Roll Number)
+2. Diya Bisht (University Roll No: 2371101)
    - Role: Frontend Development
    - Responsibilities:
      * User interface design
      * HTML/CSS implementation
      * JavaScript functionality
 
-3. [Member 3 Name] (Roll Number)
+3. Karan Singh (University Roll No: 2371171)
    - Role: Algorithm Implementation
    - Responsibilities:
      * FCFS algorithm coding
      * Time calculations
      * Process management
 
-4. [Member 4 Name] (Roll Number)
+4. Pradeep Singh Bora (University Roll No: 2371283)
    - Role: Testing & Documentation
    - Responsibilities:
      * Test case development
      * Documentation
      * Quality assurance
 
-Department: Computer Applications
-Semester: 4th
-Project Guide: [Guide Name]
+University: Graphic Era Hill University (GEHU), Bhimtal
+Department: School of Computing
+Course: Bachelor in Computer Application (BCA)
+Semester: 4th (2nd Year)
+Subject: Software Engineering
+Project Group No.: 44
+Project Faculty: Dr. Mukesh Joshi, Dr. Naveen Tewari
 
 *** SLIDE 2: PROJECT OVERVIEW ***
 Title: Project Overview
@@ -301,6 +305,6 @@ Title: Learning Outcomes
 Title: Thank You
 
 Contact Information:
-Email: [Your Email]
-GitHub: [Your GitHub]
+Email: pranjalng2002@gmail.com
+GitHub: https://github.com/PranjalNG/OS-project
 Questions & Discussion 

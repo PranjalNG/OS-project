@@ -1,7 +1,26 @@
-# First Come First Serve (FCFS) CPU Scheduling Project Guide
-## For Absolute Beginners
+# FCFS CPU Scheduling Implementation Guide
 
-### Table of Contents
+## Introduction
+
+This guide explains how to implement the First Come First Serve (FCFS) CPU scheduling algorithm with a web interface.
+
+## Project Information
+
+**University:** Graphic Era Hill University (GEHU), Bhimtal  
+**Department:** School of Computing  
+**Course:** Bachelor in Computer Application (BCA)  
+**Semester:** 4th (2nd Year)  
+**Subject:** Software Engineering  
+**Project Group No.:** 44  
+**Project Faculty:** Dr. Mukesh Joshi, Dr. Naveen Tewari
+
+**Team Members:**
+- Pranjal Nath Goswami (University Roll No: 2371289) - Project Lead & Backend Developer
+- Diya Bisht (University Roll No: 2371101) - Frontend Developer
+- Karan Singh (University Roll No: 2371171) - Algorithm Implementation
+- Pradeep Singh Bora (University Roll No: 2371283) - Testing & Documentation
+
+## Table of Contents
 1. [Project Overview](#project-overview)
 2. [What is FCFS?](#what-is-fcfs)
 3. [Project Structure](#project-structure)

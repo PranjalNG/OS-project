@@ -3,6 +3,15 @@
 ## 🚀 Project Overview
 A sophisticated implementation of the First Come First Serve (FCFS) CPU scheduling algorithm with a modern web interface. This project demonstrates efficient process management and real-time scheduling visualization.
 
+## 📋 Project Details
+**University:** Graphic Era Hill University (GEHU), Bhimtal  
+**Department:** School of Computing  
+**Course:** Bachelor in Computer Application (BCA)  
+**Semester:** 4th (2nd Year)  
+**Subject:** Software Engineering  
+**Project Group No.:** 44  
+**Project Faculty:** Dr. Mukesh Joshi, Dr. Naveen Tewari
+
 ## 🛠️ Technology Stack
 - **Backend**: C++ with Crow Framework
 - **Frontend**: HTML5, CSS3, JavaScript
@@ -148,10 +157,10 @@ struct Process {
    - Real-time updates
 
 ## 👥 Team
-- **Project Lead & Backend Development**: Pranjal Nath Goswami
-- **Frontend Development**: [Team Member 2]
-- **Algorithm Implementation**: [Team Member 3] 
-- **Testing & Documentation**: [Team Member 4]
+- **Project Lead & Backend Developer**: Pranjal Nath Goswami (University Roll No: 2371289)
+- **Frontend Developer**: Diya Bisht (University Roll No: 2371101)
+- **Algorithm Implementation**: Karan Singh (University Roll No: 2371171)
+- **Testing & Documentation**: Pradeep Singh Bora (University Roll No: 2371283)
 
 ## 📝 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -167,9 +176,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For support, email pranjalng2002@gmail.com or create an issue in the repository.
 
 ## 🙏 Acknowledgments
-- Operating Systems course faculty
+- Dr. Mukesh Joshi and Dr. Naveen Tewari for their guidance
+- School of Computing, GEHU for resources and support
 - Open-source community
 - Project contributors
 
 ---
-Made with ❤️ by OS Project Team at [Institution Name]
+Made with ❤️ by Group 44, School of Computing, GEHU Bhimtal
