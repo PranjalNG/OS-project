@@ -305,6 +305,6 @@ Title: Learning Outcomes
 Title: Thank You
 
 Contact Information:
-Email: pranjalng2002@gmail.com
+Email: pranjalnathgoswami@gmail.com
 GitHub: https://github.com/PranjalNG/OS-project
 Questions & Discussion 

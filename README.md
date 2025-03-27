@@ -173,7 +173,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 5. Open a Pull Request
 
 ## 📞 Support
-For support, email pranjalng2002@gmail.com or create an issue in the repository.
+For support, email pranjalnathgoswami@gmail.com or create an issue in the repository.
 
 ## 🙏 Acknowledgments
 - Dr. Mukesh Joshi and Dr. Naveen Tewari for their guidance
